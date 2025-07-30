@@ -14,7 +14,7 @@ ENV PYTHONUNBUFFERED=1 \
 WORKDIR /opt
 
 # Pull CosyVoice code
-RUN git clone --depth 1 https://github.com/your-org/CosyVoice.git
+RUN git clone --depth 1 https://github.com/zhanziyang/CosyVoice.git
 WORKDIR /opt/CosyVoice
 
 # Install runtime requirements
