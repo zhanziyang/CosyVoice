@@ -1,10 +1,12 @@
-# ---------- Dockerfile ----------
 FROM nvidia/cuda:12.4.1-runtime-ubuntu22.04
 
-RUN apt-get update && \
-    apt-get install -y git git-lfs ffmpeg sox libsox-dev && \
-    rm -rf /var/lib/apt/lists/* && \
-    git lfs install
+# --- system + python deps ---
+RUN apt-get update && apt-get install -y \
+    python3 python3-pip \
+    git git-lfs \
+    ffmpeg sox libsox-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && git lfs install
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
@@ -12,12 +14,12 @@ ENV PYTHONUNBUFFERED=1 \
 WORKDIR /opt
 
 # Pull CosyVoice code
-RUN git clone --depth 1 https://github.com/zhanziyang/CosyVoice.git
+RUN git clone --depth 1 https://github.com/your-org/CosyVoice.git
 WORKDIR /opt/CosyVoice
 
-# Install deps
+# Install runtime requirements
 COPY deploy/fastapi/requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt   # note pip3
 
 # Make CosyVoice + Matcha-TTS importable
 ENV PYTHONPATH="$PYTHONPATH:/opt/CosyVoice:/opt/CosyVoice/third_party/Matcha-TTS"
